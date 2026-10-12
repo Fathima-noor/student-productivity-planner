@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyFlow | Student Productivity Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="#" class="brand">
+        <span class="brand-icon">S</span>
+        <span>StudyFlow</span>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="navigation">
+        <button class="nav-link active" data-view="dashboard">
+          <span>▦</span> Dashboard
+        </button>
+        <button class="nav-link" data-view="tasks">
+          <span>☷</span> My Tasks
+        </button>
+        <button class="nav-link" data-view="calendar">
+          <span>▣</span> Calendar
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-note">
+          <div class="note-icon">✦</div>
+          <h3>Keep going!</h3>
+          <p>Small steps every day lead to big results.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">S</div>
+          <div>
+            <strong>Student</strong>
+            <small>My workspace</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">STUDENT WORKSPACE</p>
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+        <button class="primary-button" id="add-task-button">
+          <span>＋</span> Add new task
+        </button>
+      </header>
+
+      <section class="welcome-section">
+        <div>
+          <p class="eyebrow light-eyebrow" id="today-label">YOUR DAILY OVERVIEW</p>
+          <h2>Make today count.</h2>
+          <p>Plan your work, focus on your goals, and track your progress.</p>
+        </div>
+        <div class="welcome-symbol">✦</div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Total tasks</span>
+            <span class="stat-icon purple">☷</span>
+          </div>
+          <h2 id="total-count">0</h2>
+          <p>All your study tasks</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Completed</span>
+            <span class="stat-icon green">✓</span>
+          </div>
+          <h2 id="completed-count">0</h2>
+          <p>Tasks finished</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Pending</span>
+            <span class="stat-icon orange">◷</span>
+          </div>
+          <h2 id="pending-count">0</h2>
+          <p>Tasks to work on</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Overdue</span>
+            <span class="stat-icon red">!</span>
+          </div>
+          <h2 id="overdue-count">0</h2>
+          <p>Past-due unfinished tasks</p>
+        </article>
+      </section>
+
+      <section class="progress-card">
+        <div class="progress-heading">
+          <div>
+            <h3>Study progress</h3>
+            <p>Every completed task moves you forward.</p>
+          </div>
+          <strong id="progress-percent">0%</strong>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-footer">
+          <span id="progress-summary">0 of 0 tasks completed</span>
+          <span>Keep it up!</span>
+        </div>
+      </section>
+
+      <section class="content-card" id="task-section">
+        <div class="section-heading">
+          <div>
+            <h3 id="task-section-title">Your tasks</h3>
+            <p id="task-section-subtitle">Manage your assignments and study goals.</p>
+          </div>
+          <button class="text-button" id="clear-filters">Reset filters</button>
+        </div>
+
+        <div class="filter-row">
+          <input type="search" id="search-input" placeholder="Search tasks or subjects...">
+          <select id="status-filter" aria-label="Filter by status">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+          <select id="priority-filter" aria-label="Filter by priority">
+            <option value="all">All priorities</option>
+            <option value="High">High priority</option>
+            <option value="Medium">Medium priority</option>
+            <option value="Low">Low priority</option>
+          </select>
+        </div>
+
+        <div class="task-list" id="task-list"></div>
+      </section>
+
+      <section class="content-card calendar-card hidden" id="calendar-section">
+        <div class="section-heading">
+          <div>
+            <h3>Upcoming deadlines</h3>
+            <p>Your unfinished tasks ordered by due date.</p>
+          </div>
+        </div>
+        <div id="calendar-list" class="task-list"></div>
+      </section>
+
+      <footer class="footer">
+        StudyFlow · Student Productivity Planner
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="task-dialog">
+    <form id="task-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">YOUR WORKSPACE</p>
+          <h2 id="dialog-title">Create a task</h2>
+        </div>
+        <button type="button" class="close-button" id="close-dialog" aria-label="Close">×</button>
+      </div>
+
+      <input type="hidden" id="task-id">
+
+      <label for="task-title">Task title *</label>
+      <input id="task-title" maxlength="100" required placeholder="e.g. Complete database assignment">
+
+      <label for="task-subject">Subject or category *</label>
+      <input id="task-subject" maxlength="60" required placeholder="e.g. Computer Science">
+
+      <label for="task-description">Description</label>
+      <textarea id="task-description" maxlength="500" rows="3" placeholder="Add task details..."></textarea>
+
+      <div class="form-grid">
+        <div>
+          <label for="task-date">Due date *</label>
+          <input type="date" id="task-date" required>
+        </div>
+        <div>
+          <label for="task-priority">Priority</label>
+          <select id="task-priority">
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="form-error" id="form-error" role="alert"></p>
+
+      <div class="dialog-actions">
+        <button type="button" class="secondary-button" id="cancel-dialog">Cancel</button>
+        <button type="submit" class="primary-button" id="save-task-button">Save task</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
